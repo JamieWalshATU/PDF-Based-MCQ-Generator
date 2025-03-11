@@ -19,5 +19,12 @@ export class CourseServiceService {
   getCourseById(id : string): Coursedetails | undefined {
     return this.courseDetails.find(course => course.id === id);
   }
+
+  updateCourse(course : Coursedetails) {
+    const index = this.courseDetails.findIndex(c => c.id === course.id);
+    if (index !== -1) {
+      this.courseDetails[index] = course;
+    }
+  }
   
 }

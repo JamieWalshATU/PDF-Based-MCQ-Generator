@@ -1,11 +1,59 @@
-<div>
+<style>
+  .container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  .sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f0f0f0; /* Slightly darker background for better contrast */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ffffff;
+    overflow-y: auto;
+  }
+  input[type="text"], input[type="color"] {
+    display: block;
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Darker border for better contrast */
+    border-radius: 5px;
+    background-color: #e6f7ff; /* Slightly darker pastel color */
+  }
+  input[type="color"] {
+    height: 40px;
+    padding: 0;
+  }
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5dade2; /* Darker pastel color */
+    color: white;
+    cursor: pointer;
+    width: 100%;
+  }
+  button:hover {
+    background-color: #3498db; /* Slightly darker pastel color */
+  }
+</style>
+
+<div class="container">
+  <div class="sidebar">
     <!-- Course Name and Color Input -->
-    <input type="text" name="courseName" [(ngModel)]="courseName" required>
+    <input type="text" name="courseName" [(ngModel)]="courseName" placeholder="Course Name" required>
     <input type="color" name="courseColor" [(ngModel)]="courseColor" required>
     <button type="submit" (click)="generateCourse()">Submit</button>
 
     <app-course-button></app-course-button>
   </div>
-
-<router-outlet></router-outlet>
-  
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
