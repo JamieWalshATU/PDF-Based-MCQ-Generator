@@ -1,1 +1,13 @@
-<p>course-page works!</p>
+<div *ngIf="course">
+  <h1>{{ course.name }}</h1>
+  <p>{{ course.description }}</p>
+  <button (click)="goBack()">Go Back</button>
+  <button (click)="editDesc()">Edit Description</button>
+
+  <div *ngIf="course.questionSets && course.questionSets.length > 0">
+    <h2>Generated Question Sets</h2>
+    <div *ngFor="let questionSet of course.questionSets; let i = index">
+      <button (click)="viewQuestions(questionSet)">View {{ questionSet.name }}</button>
+    </div>
+  </div>
+</div>

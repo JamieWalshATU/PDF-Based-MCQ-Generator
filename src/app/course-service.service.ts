@@ -1,30 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Coursedetails } from './coursedetails.model';
+import { Coursedetails, McqQuestion } from './coursedetails.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseServiceService {
-  constructor() { }
+  private courses: Coursedetails[] = [];
 
-  courseDetails : Coursedetails[] = [];
+  constructor() {
+    // Initialize with any default courses if needed
+  }
 
   createCourse(name : string, color : string) {
-    this.courseDetails.push(new Coursedetails(name, color)); // Create a new course and add it to the list.
+    this.courses.push(new Coursedetails(name, color)); // Create a new course and add it to the list.
   }
+
   getCourseDetails() {
-    return this.courseDetails;
+    return this.courses;
   }
 
-  getCourseById(id : string): Coursedetails | undefined {
-    return this.courseDetails.find(course => course.id === id);
+  // Make these methods async for proper Promise handling
+  async getCourseById(id: string): Promise<Coursedetails | undefined> {
+    return this.courses.find(course => course.id === id);
   }
 
-  updateCourse(course : Coursedetails) {
-    const index = this.courseDetails.findIndex(c => c.id === course.id);
+  async updateCourse(updatedCourse: Coursedetails): Promise<Coursedetails> {
+    const index = this.courses.findIndex(course => course.id === updatedCourse.id);
     if (index !== -1) {
-      this.courseDetails[index] = course;
+      this.courses[index] = updatedCourse;
+      console.log('Updated course:', updatedCourse);
+      return updatedCourse;
     }
+    throw new Error('Course not found');
   }
-  
+
+  // Other methods as needed
 }

@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { NgComponentOutlet, NgFor } from '@angular/common';
 import { CourseButtonComponent } from './course-button/course-button.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PdfParserComponent } from "./pdf-parser/pdf-parser.component";
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, NgComponentOutlet, NgFor, CourseButtonComponent, RouterOutlet, MatDialogModule],
+  imports: [FormsModule, NgComponentOutlet, NgFor, CourseButtonComponent, RouterOutlet, MatDialogModule, PdfParserComponent],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -25,7 +26,7 @@ export class AppComponent {
       return;
     }
     // Check if a course with the same name already exists
-    if (this.courseService.courseDetails.some(course => course.name === this.courseName)) {
+    if (this.courseService.getCourseDetails().some((course: { name: string }) => course.name === this.courseName)) {
       alert('Course already exists!');
       return;
     }

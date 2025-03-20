@@ -3,13 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { CourseServiceService } from '../course-service.service';
-import { Coursedetails } from '../coursedetails.model';
+import { Coursedetails, QuestionSet, McqQuestion } from '../coursedetails.model';
 import { EditDescriptionModalComponent } from '../edit-description-modal/edit-description-modal.component';
+import { PdfParserComponent } from '../pdf-parser/pdf-parser.component';
 
 @Component({
   selector: 'app-course-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PdfParserComponent, EditDescriptionModalComponent],
   template: `
     <div *ngIf="course" class="course-container" [style.backgroundColor]="secondaryColor">
       <div class="course-header">
@@ -18,10 +19,29 @@ import { EditDescriptionModalComponent } from '../edit-description-modal/edit-de
       <div class="course-details">
         <p>Course ID: {{courseId}}</p>
         <p>Course Description: {{course.description}}</p>
+        <app-pdf-parser *ngIf="courseId" [id]="courseId"></app-pdf-parser>
       </div>
       <div class="course-actions">
         <button (click)="goBack()">Back</button>
         <button (click)="editDesc()">Edit Description</button>
+      </div>
+      <div *ngIf="course.questionSets && course.questionSets.length > 0">
+        <h2>Generated Question Sets</h2>
+        <div *ngFor="let questionSet of course.questionSets; let i = index">
+          <button (click)="viewQuestions(questionSet)">View {{ questionSet.name }}</button>
+        </div>
+      </div>
+      <div *ngIf="selectedQuestionSet">
+        <h3>{{ selectedQuestionSet.name }}</h3>
+        <ul>
+          <li *ngFor="let question of selectedQuestionSet.questions">
+            <strong>Q:</strong> {{ question.question }}<br>
+            <strong>A:</strong> {{ question.correctAnswer }}<br>
+            <strong>W1:</strong> {{ question.wrongAnswers[0] }}<br>
+            <strong>W2:</strong> {{ question.wrongAnswers[1] }}<br>
+            <strong>W3:</strong> {{ question.wrongAnswers[2] }}<br>
+          </li>
+        </ul>
       </div>
     </div>
   `,
@@ -80,6 +100,7 @@ export class CoursePageComponent implements OnInit {
   courseId: string | null = null;
   course: Coursedetails | undefined;
   secondaryColor: string = '';
+  selectedQuestionSet: QuestionSet | null = null; // Add this property
 
   constructor(
     private route: ActivatedRoute,
@@ -93,10 +114,20 @@ export class CoursePageComponent implements OnInit {
       this.courseId = params.get('id');
       if (this.courseId) {
         // Find the course in the service
-        this.course = this.courseService.getCourseById(this.courseId);
-        if (this.course) {
-          this.secondaryColor = this.calculateSecondaryColor(this.course.color);
-        }
+        this.courseService.getCourseById(this.courseId)
+          .then((course: Coursedetails | undefined) => {
+            this.course = course;
+            if (this.course) {
+              this.secondaryColor = this.calculateSecondaryColor(this.course.color);
+            } else {
+              console.error('Course not found');
+              window.history.back();
+            }
+          })
+          .catch((error: Error) => {
+            console.error('Error fetching course:', error);
+            window.history.back();
+          });
       }
     });
   }
@@ -137,5 +168,9 @@ export class CoursePageComponent implements OnInit {
   componentToHex(c: number): string {
     const hex = c.toString(16);
     return hex.length == 1 ? '0' + hex : hex;
+  }
+
+  viewQuestions(questionSet: QuestionSet): void {
+    this.selectedQuestionSet = questionSet; // Set the selected question set
   }
 }
