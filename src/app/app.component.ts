@@ -9,7 +9,7 @@ import { PdfParserComponent } from "./pdf-parser/pdf-parser.component";
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, NgComponentOutlet, NgFor, CourseButtonComponent, RouterOutlet, MatDialogModule, PdfParserComponent],
+  imports: [FormsModule, CourseButtonComponent, RouterOutlet, MatDialogModule],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

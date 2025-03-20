@@ -1,8 +1,9 @@
 <div>
   <input type="file" (change)="onFileChange($event)">
   <div>
-    <button (click)="APIchatResponse()">Get OCR Response</button>
-    <button (click)="getChatResponse()">Get Chat Response</button>
+    <button [disabled]="invalid" (click)="getChatResponse()">Get Chat Response</button>
+    <span class="spinner-container">
+      <mat-spinner *ngIf="loading" [diameter]="30" [color]="color"></mat-spinner>
+    </span>
   </div>
-
 </div>

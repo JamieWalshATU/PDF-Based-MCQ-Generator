@@ -1,0 +1,36 @@
+button {
+  background-color: #ffccbc;
+  color: #4a4a4a;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #ffab91;
+}
+
+button:disabled {
+  opacity: 0.5; /* You can adjust this value between 0 and 1 */
+  cursor: not-allowed;
+}
+
+/* Optional: Add a transition for a smooth effect when the button becomes enabled/disabled */
+button {
+  transition: opacity 0.3s ease;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+
+/* Spinner container styling */
+.spinner-container {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+/* Update the HTML to include this class */

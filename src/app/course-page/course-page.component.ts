@@ -19,19 +19,19 @@ import { PdfParserComponent } from '../pdf-parser/pdf-parser.component';
       <div class="course-details">
         <p>Course ID: {{courseId}}</p>
         <p>Course Description: {{course.description}}</p>
-        <app-pdf-parser *ngIf="courseId" [id]="courseId"></app-pdf-parser>
+        <app-pdf-parser *ngIf="courseId" [id]="courseId" [color]="course.color"></app-pdf-parser>
       </div>
       <div class="course-actions">
         <button (click)="goBack()">Back</button>
         <button (click)="editDesc()">Edit Description</button>
       </div>
-      <div *ngIf="course.questionSets && course.questionSets.length > 0">
+      <div *ngIf="course.questionSets && course.questionSets.length > 0" class="question-sets-container">
         <h2>Generated Question Sets</h2>
         <div *ngFor="let questionSet of course.questionSets; let i = index">
-          <button (click)="viewQuestions(questionSet)">View {{ questionSet.name }}</button>
+          <button (click)="viewQuestions(questionSet)"> {{ questionSet.name }}</button>
         </div>
       </div>
-      <div *ngIf="selectedQuestionSet">
+      <div *ngIf="selectedQuestionSet" class="selected-question-set" [style.backgroundColor]="secondaryColor">
         <h3>{{ selectedQuestionSet.name }}</h3>
         <ul>
           <li *ngFor="let question of selectedQuestionSet.questions">
@@ -94,14 +94,37 @@ import { PdfParserComponent } from '../pdf-parser/pdf-parser.component';
     button:hover {
       background-color: #ffab91;
     }
+    .question-sets-container {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: inherit; /* Inherits the parent's background color */
+    }
+    .selected-question-set {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background-color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
   `]
 })
 export class CoursePageComponent implements OnInit {
   courseId: string | null = null;
   course: Coursedetails | undefined;
   secondaryColor: string = '';
-  selectedQuestionSet: QuestionSet | null = null; // Add this property
-
+  selectedQuestionSet: QuestionSet | null = null;
+  
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseServiceService,
@@ -111,6 +134,9 @@ export class CoursePageComponent implements OnInit {
   ngOnInit(): void {
     // Get the route parameter
     this.route.paramMap.subscribe(params => {
+      // Reset selected question set when route changes
+      this.selectedQuestionSet = null;
+      
       this.courseId = params.get('id');
       if (this.courseId) {
         // Find the course in the service
