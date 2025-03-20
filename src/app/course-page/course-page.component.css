@@ -59,7 +59,3 @@ button {
 button:hover {
   background-color: var(--button-hover-bg-color);
 }
-
-.mat-progress-spinner circle, .mat-spinner circle {
-  stroke: var(--secondary-color);
-  }

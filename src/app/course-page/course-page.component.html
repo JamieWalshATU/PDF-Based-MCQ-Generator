@@ -1,0 +1,12 @@
+<div class="course-actions">
+  <button (click)="goBack()" [style.backgroundColor]="buttonColor">Back</button>
+  <button (click)="editDesc()" [style.backgroundColor]="buttonColor">Edit Description</button>
+</div>
+<div *ngIf="course.questionSets && course.questionSets.length > 0" class="question-sets-container">
+  <h2>Generated Question Sets</h2>
+  <div *ngFor="let questionSet of course.questionSets; let i = index">
+    <button (click)="viewQuestions(questionSet)" [style.backgroundColor]="buttonColor"> 
+      {{ questionSet.name }}
+    </button>
+  </div>
+</div>

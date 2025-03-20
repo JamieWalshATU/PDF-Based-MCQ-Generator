@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, ElementRef, OnChanges } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { CourseServiceService } from '../course-service.service';
 import { Coursedetails, McqQuestion } from '../coursedetails.model'; // Import the interface
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-pdf-parser',
@@ -15,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true,
   imports: [HttpClientModule, FormsModule, CommonModule, MatProgressSpinnerModule]
 })
-export class PdfParserComponent implements OnInit {
+export class PdfParserComponent implements OnInit, OnChanges {
   private apiKey = environment.MISTRAL_API_KEY;
   private client = new Mistral({ apiKey: this.apiKey });
   private uploadedPdf: any;
@@ -23,20 +24,39 @@ export class PdfParserComponent implements OnInit {
   public invalid : boolean = true;
   public loading: boolean = false;
   
-  constructor(private courseService: CourseServiceService) {}
   @Input() id: string = '';
   @Input() color: string = '';
   @Output() idChange = new EventEmitter<string>();
+  public lighterBackground : { 'background-color': string } = {
+    'background-color': this.adjustColorBrightness(this.color, 0.8),
+  }
+  public lightBG : string = this.adjustColorBrightness(this.color, 0.8);
+  constructor(private courseService: CourseServiceService, private themeService: ThemeService, private elementRef: ElementRef) {
+    this.themeService.setTheme({
+          'background-color': this.color,
+          'lightBG': this.lightBG,
+  })};
+
+  private adjustColorBrightness(color: string, factor: number): string {
+    const colorValue = parseInt(color.replace('#', ''), 16);
+    const r = Math.min(255, Math.floor(((colorValue >> 16) & 0xFF) * factor));
+    const g = Math.min(255, Math.floor(((colorValue >> 8) & 0xFF) * factor));
+    const b = Math.min(255, Math.floor((colorValue & 0xFF) * factor));
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  }
 
   ngOnInit() {
     // Apply the color to the spinner when the component initializes
     this.applySpinnerColor();
+    this.applyColorStyles();
   }
+  
   
   // Apply this method when color changes
   ngOnChanges(changes: SimpleChanges) {
     if (changes['color']) {
       this.applySpinnerColor();
+      this.applyColorStyles();
     }
   }
   
@@ -50,6 +70,13 @@ export class PdfParserComponent implements OnInit {
         }
       `;
       document.head.appendChild(styleEl);
+    }
+  }
+
+  applyColorStyles() {
+    if (this.color) {
+      // Apply the color to the host element as a CSS variable
+      this.elementRef.nativeElement.style.setProperty('--background-color', this.color);
     }
   }
 

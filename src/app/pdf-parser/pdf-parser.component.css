@@ -1,5 +1,9 @@
+:host {
+  --background-color: #ffccbc; /* Default color if none provided */
+}
+
 button {
-  background-color: #ffccbc;
+  background-color: var(--background-color);
   color: #4a4a4a;
   border: none;
   padding: 10px 15px;
@@ -9,9 +13,9 @@ button {
 }
 
 button:hover {
-  background-color: #ffab91;
-}
+  background-color: var(--lightBG); /* Lighten the background color by 20% */
 
+}
 button:disabled {
   opacity: 0.5; /* You can adjust this value between 0 and 1 */
   cursor: not-allowed;
@@ -27,10 +31,7 @@ input[type="file"] {
 }
 
 /* Spinner container styling */
-.spinner-container {
-  display: inline-block;
-  margin-left: 10px;
-  vertical-align: middle;
+:host >>> .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
+:host >>> .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+    stroke: var(--background-color) !important;
 }
-
-/* Update the HTML to include this class */

@@ -55,5 +55,7 @@
   </div>
   <div class="content">
     <router-outlet></router-outlet>
+    <div class="uploader-status"></div>
+    <mat-spinner *ngIf="loading" [diameter]="30" color="warm"></mat-spinner>
   </div>
 </div>

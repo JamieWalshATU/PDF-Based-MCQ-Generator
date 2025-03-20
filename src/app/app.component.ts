@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CourseServiceService } from './course-service.service';
 import { FormsModule } from '@angular/forms';
-import { NgComponentOutlet, NgFor } from '@angular/common';
+import { CommonModule, NgComponentOutlet, NgFor } from '@angular/common';
 import { CourseButtonComponent } from './course-button/course-button.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PdfParserComponent } from "./pdf-parser/pdf-parser.component";
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, CourseButtonComponent, RouterOutlet, MatDialogModule],
+  imports: [FormsModule, CourseButtonComponent, RouterOutlet, MatDialogModule, MatSpinner, CommonModule],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -19,6 +20,8 @@ export class AppComponent {
   title = 'studyapptest';
   courseName: string = '';
   courseColor: string = '';
+  public loading: boolean = true;
+  testColor: string = 'red';
 
   generateCourse() {
     if (this.courseName === '' || this.courseColor === '') {
