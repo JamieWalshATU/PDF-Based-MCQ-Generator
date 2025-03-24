@@ -1,0 +1,12 @@
+<div>
+    <input type="file" (change)="onFileChange($event)">
+    <div *ngIf="loading" class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="!loading">
+      <button [disabled]="invalid" (click)="getChatResponse()">Get Chat Response</button>
+      <span class="spinner-container">
+        <mat-spinner *ngIf="loading" [diameter]="30" [color]="color"></mat-spinner>
+      </span>
+    </div>
+  </div>
