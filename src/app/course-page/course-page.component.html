@@ -1,0 +1,10 @@
+<app-pdf-parser *ngIf="courseId" [id]="courseId" [color]="secondaryColor"></app-pdf-parser>
+</div>
+  <div *ngIf="course.questionSets && course.questionSets.length > 0" class="question-sets-container">
+    <h2>Generated Question Sets</h2>
+    <div *ngFor="let questionSet of course.questionSets; let i = index">
+      <button (click)="viewQuestions(questionSet)" [style.backgroundColor]="buttonColor"> 
+        {{ questionSet.name }}
+      </button>
+    </div>
+  </div>
