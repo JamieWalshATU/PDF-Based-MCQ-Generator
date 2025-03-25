@@ -42,5 +42,5 @@ testem.log
 .DS_Store
 Thumbs.db
 .env
-src/environments/*.ts
+src/environments/
 .qodo
