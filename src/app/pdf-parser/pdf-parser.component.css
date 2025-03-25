@@ -1,6 +1,7 @@
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+/* Spinner container styling */
+:host >>> .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
+:host >>> .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic,
+:host >>> .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle:hover,
+:host >>> .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic:hover {
+    stroke: var(--color) !important;
 }

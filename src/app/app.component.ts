@@ -4,9 +4,11 @@ import { CourseService } from './course.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CourseButtonComponent } from './course-button/course-button.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule, CommonModule, CourseButtonComponent],
+  imports: [RouterOutlet, FormsModule, CommonModule, CourseButtonComponent, MatProgressSpinnerModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true

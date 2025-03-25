@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, ElementRef, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, ElementRef, OnChanges, Renderer2 } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -27,16 +27,24 @@ export class PdfParserComponent implements OnInit, OnChanges {
   @Input() color: string = '';
   @Output() idChange = new EventEmitter<string>();
 
-  constructor(private courseService: CourseService, private elementRef: ElementRef) {}
+  constructor(private courseService: CourseService, private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit() {
     console.log("Initialized with course ID:", this.id); // Debugging statement
+    this.setColorVariable(this.color);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['id']) {
       console.log("Course ID changed to:", this.id); // Debugging statement
     }
+    if (changes['color']) {
+      this.setColorVariable(this.color);
+    }
+  }
+
+  setColorVariable(color: string) {
+    document.documentElement.style.setProperty('--color', color);
   }
 
   onFileChange(event: any) {
@@ -44,6 +52,7 @@ export class PdfParserComponent implements OnInit, OnChanges {
     if (file) {
       // Disable button while parsing PDF
       this.invalid = true;
+      this.loading = true;
       this.parsePdf(file);
       console.log("File change detected, course ID:", this.id); // Debugging statement
     }
@@ -67,10 +76,12 @@ export class PdfParserComponent implements OnInit, OnChanges {
       console.log('Uploaded PDF:', this.uploadedPdf);
       // Enable button after PDF is successfully parsed
       this.invalid = false;
+      this.loading = false;
     } catch (error) {
       console.error('Error uploading file:', error);
       // Keep button disabled if error occurs
       this.invalid = true;
+      this.loading = false;
     }
   }
 

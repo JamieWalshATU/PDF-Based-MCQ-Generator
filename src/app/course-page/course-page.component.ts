@@ -6,12 +6,13 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgIf } from '@angular/common';
 import { PdfParserComponent } from "../pdf-parser/pdf-parser.component";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TestComponent } from '../test/test.component';
 
 @Component({
   selector: 'app-course-page',
   standalone: true,
-  imports: [CommonModule, NgIf, PdfParserComponent],
-  styleUrl: './course-page.component.css',
+  imports: [CommonModule, NgIf, PdfParserComponent, MatProgressSpinnerModule, TestComponent],
   template: `
     <div *ngIf="course" class="course-container">
       <div class="course-header">
@@ -44,12 +45,11 @@ import { PdfParserComponent } from "../pdf-parser/pdf-parser.component";
       <ul>
         <li *ngFor="let question of selectedQuestionSet.questions">
           <strong>Q:</strong> {{ question.question }}<br />
-          <strong>A:</strong> {{ question.correctAnswer }}<br />
-          <strong>W1:</strong> {{ question.wrongAnswers[0] }}<br />
-          <strong>W2:</strong> {{ question.wrongAnswers[1] }}<br />
-          <strong>W3:</strong> {{ question.wrongAnswers[2] }}<br />
         </li>
       </ul>
+      <button (click)="generateTest()" [style.backgroundColor]="course?.color">Generate Test</button>
+      <button (click)="selectedQuestionSet = null" [style.backgroundColor]="course?.color">Close</button>
+      <app-test *ngIf="showTest" [data]="selectedQuestionSet.questions"></app-test>
     </div>
   `,
 })
@@ -58,6 +58,8 @@ export class CoursePageComponent implements OnInit {
   courseId: string | null = null;
   courseColor: string | null = null;
   selectedQuestionSet: QuestionSet | null = null;
+  loading: boolean = true;
+  showTest: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +71,7 @@ export class CoursePageComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       // Reset selected question set when route changes
       this.selectedQuestionSet = null;
+      this.showTest = false;
 
       this.courseId = params.get('id');
       if (this.courseId) {
@@ -94,5 +97,10 @@ export class CoursePageComponent implements OnInit {
 
   viewQuestions(questionSet: QuestionSet): void {
     this.selectedQuestionSet = questionSet; // Set the selected question set
+    this.showTest = false; // Hide the test when viewing new questions
+  }
+
+  generateTest(): void {
+    this.showTest = true; // Show the test component when Generate Test is clicked
   }
 }
