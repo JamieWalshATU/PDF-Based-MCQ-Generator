@@ -1,27 +1,35 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CourseDetails } from '../course-details.model';
 import { Router } from '@angular/router';
 import { CourseService } from '../course.service';
 
 @Component({
   selector: 'app-course-button',
-  imports: [CommonModule, ],
+  imports: [CommonModule],
   templateUrl: './course-button.component.html',
   styleUrl: './course-button.component.css',
   standalone: true
 })
-export class CourseButtonComponent {
+export class CourseButtonComponent implements OnInit {
   courses: CourseDetails[] = [];
-  constructor(private courseService: CourseService, private router: Router) { } // Inject the course service and router
+  
+  constructor(private courseService: CourseService, private router: Router) { }
 
   ngOnInit() {
+    // Initial load
     this.courses = this.courseService.getCourseDetails();
-    console.log(this.courses); // Log the courses
+    
+    // Initialize the database if needed
+    this.courseService.init().then(() => {
+      // Refresh courses after DB initialization
+      this.courses = this.courseService.getCourseDetails();
+      console.log('Courses loaded in button component:', this.courses.length);
+    });
   }
   
   navigateToPage(courseID: string) {
-    this.router.navigate(['/course-page', courseID]); // Navigate to the course page
+    this.router.navigate(['/course-page', courseID]);
   }
 }
 

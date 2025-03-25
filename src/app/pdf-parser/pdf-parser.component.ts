@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, ElementRef, OnChanges, Renderer2 } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -173,27 +174,94 @@ export class PdfParserComponent implements OnInit, OnChanges {
   }
 
   async addQuestionsToCourse(questions: McqQuestion[]): Promise<void> {
-    if (this.questions.length === 0) {
-      console.error("No questions to add. Please call getChatResponse() first.");
+    if (!questions || questions.length === 0) {
+      console.error("No questions to add. Please generate questions first.");
       return;
     }
-
+  
     try {
-      console.log("Course ID:", this.id); // Debugging statement
+      console.log("Adding questions to course with ID:", this.id);
       const course = await this.courseService.getCourseById(this.id);
       if (!course) {
-        console.error("Course not found.");
+        console.error("Course not found with ID:", this.id);
         return;
       }
-
-      const questionSetName = `Question Set ${course.questionSets.length + 1}`;
-      course.addQuestionSet(questionSetName, this.questions);
-
-      await this.courseService.updateCourse(course);
-      console.log("Updated course with questions:", course);
+  
+      // Create a deep copy of the course object to make it extensible
+      const courseCopy = JSON.parse(JSON.stringify(course));
+      
+      // Ensure questionSets array exists
+      if (!courseCopy.questionSets) {
+        courseCopy.questionSets = [];
+      }
+      
+      const questionSetName = `Question Set ${courseCopy.questionSets.length + 1}`;
+      
+      // Create a new question set with a deep copy of the questions
+      const newQuestionSet = {
+        id: uuidv4(),
+        name: questionSetName,
+        questions: JSON.parse(JSON.stringify(questions))
+      };
+      
+      // Add the new question set to the course copy
+      courseCopy.questionSets.push(newQuestionSet);
+  
+      // Update the course with the modified copy
+      await this.courseService.updateCourse(courseCopy);
+      console.log("Updated course with new question set:", questionSetName);
+      
+      // Clear questions after adding them
       this.questions = [];
     } catch (error) {
       console.error("Error updating course with questions:", error);
+    }
+  }
+
+  async addQuestionsToQuestionSet(courseId: string, questions: any[]) {
+    try {
+      // Get the course
+      const course = await this.courseService.getCourseById(courseId);
+      if (!course) {
+        console.error('Course not found');
+        return;
+      }
+      
+      // Create a deep copy of the object to make it extensible
+      // This is crucial - RxDB documents are frozen objects
+      const courseCopy = JSON.parse(JSON.stringify(course));
+      
+      // Ensure questionSets array exists
+      if (!courseCopy.questionSets) {
+        courseCopy.questionSets = [];
+      }
+      
+      // Find or create the "Parsed Questions" set
+      let questionSet = courseCopy.questionSets.find((set: any) => set.name === 'Parsed Questions');
+      
+      if (!questionSet) {
+        // Create a new question set
+        questionSet = {
+          id: uuidv4(),
+          name: 'Parsed Questions',
+          questions: []
+        };
+        courseCopy.questionSets.push(questionSet);
+      } else if (!questionSet.questions) {
+        // Ensure questions array exists
+        questionSet.questions = [];
+      }
+      
+      // Add the questions to the question set
+      questions.forEach((question: any) => {
+        questionSet.questions.push(question);
+      });
+      
+      // Update the course
+      await this.courseService.updateCourse(courseCopy);
+      console.log('Questions added to course successfully');
+    } catch (error) {
+      console.error('Error updating course with questions:', error);
     }
   }
 }
