@@ -8,13 +8,15 @@ import { CommonModule } from '@angular/common';
 import { CourseService } from '../course.service';
 import { CourseDetails, McqQuestion } from '../course-details.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButton } from '@angular/material/button';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-pdf-parser',
   templateUrl: './pdf-parser.component.html',
   styleUrls: ['./pdf-parser.component.css'],
   standalone: true,
-  imports: [HttpClientModule, FormsModule, CommonModule, MatProgressSpinnerModule]
+  imports: [HttpClientModule, FormsModule, CommonModule, MatProgressSpinnerModule, MatButton]
 })
 export class PdfParserComponent implements OnInit, OnChanges {
   private apiKey = environment.MISTRAL_API_KEY;
@@ -25,7 +27,7 @@ export class PdfParserComponent implements OnInit, OnChanges {
   public loading: boolean = false;
 
   @Input() id: string = '';
-  @Input() color: string = '';
+  @Input() color: string = '#000000';
   @Output() idChange = new EventEmitter<string>();
 
   constructor(private courseService: CourseService, private elementRef: ElementRef, private renderer: Renderer2) {}
@@ -33,6 +35,7 @@ export class PdfParserComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log("Initialized with course ID:", this.id); // Debugging statement
     this.setColorVariable(this.color);
+    console.log("Color set to:", this.color); // Debugging statement
     // Ensure the question sets are styled correctly on initialization
     const questionSetsElement = document.querySelector('.question-sets');
     if (questionSetsElement) {
@@ -42,10 +45,11 @@ export class PdfParserComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['id']) {
-      console.log("Course ID changed to:", this.id); // Debugging statement
+      console.log("Course ID changed to:", this.id);
     }
     if (changes['color']) {
       this.setColorVariable(this.color);
+      console.log("Color changed to: ", this.color) // Debugging statement
     }
   }
 

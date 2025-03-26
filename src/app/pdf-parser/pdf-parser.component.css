@@ -5,3 +5,7 @@
 :host >>> .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic:hover {
     stroke: var(--color) !important;
 }
+
+.save-button {
+    background: var(--color);
+  }

@@ -1,6 +1,6 @@
 <div class="pdf-parser-container" (dragover)="handleDragOver($event)" (drop)="handleDrop($event)">
   <input type="file" (change)="onFileChange($event)" id="fileInput" />
-  <button mat-raised-button color="primary" (click)="getChatResponse()" [disabled]="invalid">Generate Questions</button>
+  <button mat-flat-button class="save-button" (click)="getChatResponse()" [disabled]="invalid">Generate Questions</button>
   <div *ngIf="loading" class="spinner-container">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
   </div>

@@ -1,5 +1,6 @@
-<div *ngFor="let course of courses" class="course-button" [style.backgroundColor]="course.color">
-    <h3>{{ course.name || 'No Name' }}</h3>
-    <p>Debug: Color is {{ course.color || 'No Color' }}</p>
-    <button (click)="navigateToPage(course.id)">View Details</button>
+<div *ngFor="let course of courses" class="course-button" [style.backgroundColor]="course.color" style="border-radius: 10px; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+  <h3 style="flex: 1; text-align: left; margin: 0;">{{ course.name || 'No Name' }}</h3>
+  <div style="flex: 1; display: flex; justify-content: flex-end;">
+    <button mat-raised-button (click)="navigateToPage(course.id)" style="font-size: smaller;">View Details</button>
   </div>
+</div>

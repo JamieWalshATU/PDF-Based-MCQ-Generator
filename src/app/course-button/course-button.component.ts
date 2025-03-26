@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { CourseDetails } from '../course-details.model';
 import { Router } from '@angular/router';
 import { CourseService } from '../course.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-course-button',
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule],
   templateUrl: './course-button.component.html',
   styleUrl: './course-button.component.css',
   standalone: true
