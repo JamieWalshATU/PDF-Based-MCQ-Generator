@@ -13,45 +13,8 @@ import { TestComponent } from '../test/test.component';
   selector: 'app-course-page',
   standalone: true,
   imports: [CommonModule, NgIf, PdfParserComponent, MatProgressSpinnerModule, TestComponent],
-  template: `
-    <div *ngIf="course" class="course-container">
-      <div class="course-header">
-        <h1 [style.color]="course.color">{{ course.name }}</h1>
-      </div>
-      <div class="course-details">
-        <p>Course ID: {{ courseId }}</p>
-        <p *ngIf="course?.description">
-          Course Description: {{ course.description }}
-        </p>
-        <app-pdf-parser *ngIf="courseId" [id]="courseId" [color]="course.color" (questionSetsUpdated)="refreshQuestionSets()"></app-pdf-parser>
-      </div>
-    </div>
-    <div
-      *ngIf="course && course.questionSets && course.questionSets.length > 0"
-      class="question-sets-container"
-    >
-      <h2>Generated Question Sets</h2>
-      <div *ngFor="let questionSet of course?.questionSets; let i = index">
-        <button
-          (click)="viewQuestions(questionSet)"
-          [style.backgroundColor]="course.color"
-        >
-          {{ questionSet.name }}
-        </button>
-      </div>
-    </div>
-    <div *ngIf="selectedQuestionSet" class="selected-question-set">
-      <h3>{{ selectedQuestionSet.name }}</h3>
-      <ul>
-        <li *ngFor="let question of selectedQuestionSet.questions">
-          <strong>Q:</strong> {{ question.question }}<br />
-        </li>
-      </ul>
-      <button (click)="generateTest()" [style.backgroundColor]="course?.color">Generate Test</button>
-      <button (click)="selectedQuestionSet = null" [style.backgroundColor]="course?.color">Close</button>
-      <app-test *ngIf="showTest" [data]="selectedQuestionSet.questions"></app-test>
-    </div>
-  `,
+  templateUrl: './course-page.component.html',
+  styleUrls: ['./course-page.component.css']
 })
 export class CoursePageComponent implements OnInit {
   course: CourseDetails | undefined;

@@ -33,6 +33,11 @@ export class PdfParserComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log("Initialized with course ID:", this.id); // Debugging statement
     this.setColorVariable(this.color);
+    // Ensure the question sets are styled correctly on initialization
+    const questionSetsElement = document.querySelector('.question-sets');
+    if (questionSetsElement) {
+      questionSetsElement.classList.add('question-sets');
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -262,6 +267,18 @@ export class PdfParserComponent implements OnInit, OnChanges {
       console.log('Questions added to course successfully');
     } catch (error) {
       console.error('Error updating course with questions:', error);
+    }
+  }
+
+  handleDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  handleDrop(event: DragEvent): void {
+    event.preventDefault();
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.onFileChange({ target: { files } });
     }
   }
 }

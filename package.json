@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@mistralai/mistralai": "^1.5.2",
+    "rxdb": "^16.8.1",
     "rxjs": "~7.8.0",
     "study-app-new": "file:",
     "tslib": "^2.3.0",

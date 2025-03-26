@@ -1,0 +1,59 @@
+/* Ensures full height of the page and flex layout */
+.container {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+}
+
+/* Sidebar Styling - Position it on the left */
+.sidebar {
+    position: fixed; /* Fix sidebar to the left */
+    top: 64px; /* Start below the toolbar */
+    left: 0; /* Sidebar on the left side */
+    width: 250px; /* Adjust width of the sidebar */
+    height: calc(100% - 64px); /* Full height minus the toolbar height */
+    background-color: #f4f4f4; /* Sidebar background color */
+    padding: 20px;
+    overflow-y: auto; /* Make sidebar content scrollable if needed */
+    z-index: 1000; /* Ensure it is on top */
+}
+
+/* Content area styling */
+.content {
+    margin-left: 300px; /* Adjusted to move the course page more to the right */
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1; /* Allow content to fill the remaining space */
+    margin-top: 64px; /* Add space for the toolbar height */
+    display: flex; /* Add flex layout */
+    flex-direction: row; /* Arrange content and question sets in a row */
+}
+
+/* Style for the toolbar to remain fixed */
+mat-toolbar {
+    z-index: 1001; /* Ensure toolbar stays on top */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Question sets styling */
+.question-sets {
+    width: 50%; /* Take up the right half of the page */
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100% - 64px); /* Full height minus the toolbar height */
+    background-color: #ffffff; /* Optional: Background color for question sets */
+    z-index: 1000; /* Ensure it is on top */
+}
+
+/* Optional: Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px; /* Smaller sidebar for mobile */
+    }
+
+    .content {
+        margin-left: 60px; /* Adjust content margin for mobile */
+    }
+}

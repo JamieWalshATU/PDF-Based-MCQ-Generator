@@ -1,19 +1,31 @@
-<div id="spinner"></div>
+<mat-toolbar color="primary">
+  My Application
+</mat-toolbar>
+
 <div class="container">
   <div class="sidebar">
     <!-- Course Name and Color Input -->
-    <input
-      type="text"
-      name="courseName"
-      [(ngModel)]="courseName"
-      placeholder="Course Name"
-      required
-    />
-    <input type="color" name="courseColor" [(ngModel)]="courseColor" required />
-    <button type="submit" (click)="generateCourse()">Submit</button>
-    <app-course-button></app-course-button>
+    <mat-form-field appearance="outline">
+      <mat-label>Course Name</mat-label>
+      <input
+        matInput placeholder="Biology 101"
+        type="text"
+        name="courseName"
+        [(ngModel)]="courseName"
+        required
+      />
+    </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>Course Color</mat-label>
+      <input matInput type="color" name="courseColor" [(ngModel)]="courseColor" required />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" (click)="generateCourse()">Submit</button>
+
+    <app-course-button></app-course-button>
   </div>
+
   <div class="content">
     <router-outlet></router-outlet>
     <div class="uploader-status"></div>

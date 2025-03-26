@@ -5,10 +5,30 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CourseButtonComponent } from './course-button/course-button.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule, CommonModule, CourseButtonComponent, MatProgressSpinnerModule],
+  imports: [
+    RouterOutlet, 
+    FormsModule, 
+    CommonModule, 
+    CourseButtonComponent, 
+    MatProgressSpinnerModule, 
+    MatInputModule, 
+    MatFormFieldModule, 
+    MatSidenavModule, 
+    MatListModule, 
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true

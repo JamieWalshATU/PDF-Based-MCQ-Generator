@@ -3,10 +3,10 @@
   <ul>
     <li *ngFor="let question of unorderedQuestions; let i = index">
       <strong>Q:</strong> {{ question.question }}<br />
-      <button (click)="checkAnswer(i, 0)" [disabled]="question.answered">1: {{ question.unorderedAnswers[0] }}</button><br />
-      <button (click)="checkAnswer(i, 1)" [disabled]="question.answered">2: {{ question.unorderedAnswers[1] }}</button><br />
-      <button (click)="checkAnswer(i, 2)" [disabled]="question.answered">3: {{ question.unorderedAnswers[2] }}</button><br />
-      <button (click)="checkAnswer(i, 3)" [disabled]="question.answered">4: {{ question.unorderedAnswers[3] }}</button><br />
+      <button mat-raised-button (click)="checkAnswer(i, 0)" [disabled]="question.answered">1: {{ question.unorderedAnswers[0] }}</button><br />
+      <button mat-raised-button (click)="checkAnswer(i, 1)" [disabled]="question.answered">2: {{ question.unorderedAnswers[1] }}</button><br />
+      <button mat-raised-button (click)="checkAnswer(i, 2)" [disabled]="question.answered">3: {{ question.unorderedAnswers[2] }}</button><br />
+      <button mat-raised-button (click)="checkAnswer(i, 3)" [disabled]="question.answered">4: {{ question.unorderedAnswers[3] }}</button><br />
       <span *ngIf="question.answered" [ngClass]="{'correct': question.isCorrect, 'incorrect': !question.isCorrect}">
         {{ question.isCorrect ? 'Correct!' : 'Incorrect! The correct answer is: ' + question.correctAnswer }}
       </span>
@@ -15,7 +15,7 @@
   
   <div *ngIf="allQuestionsAnswered()">
     <h3>Your Score: {{ score }} / {{ unorderedQuestions.length }}</h3>
-    <button (click)="resetTest()">Reset Test</button>
+    <button mat-raised-button color="primary" (click)="resetTest()">Reset Test</button>
   </div>
 </div>
 

@@ -1,0 +1,100 @@
+/* Ensures full height of the page and flex layout */
+.container {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+}
+
+/* Sidebar Styling - Position it on the left */
+.sidebar {
+    position: fixed; /* Fix sidebar to the left */
+    top: 64px; /* Start below the toolbar */
+    left: 0; /* Sidebar on the left side */
+    width: 250px; /* Adjust width of the sidebar */
+    height: calc(100% - 64px); /* Full height minus the toolbar height */
+    background-color: #f4f4f4; /* Sidebar background color */
+    padding: 20px;
+    overflow-y: auto; /* Make sidebar content scrollable if needed */
+    z-index: 1000; /* Ensure it is on top */
+}
+
+/* Content area styling */
+.content {
+    margin-left: 300px; /* Increased to move the course page more to the right */
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1; /* Allow content to fill the remaining space */
+    margin-top: 64px; /* Add space for the toolbar height */
+    display: flex;
+    flex-direction: row; /* Arrange course content and question sets in a row */
+}
+
+/* Style for the toolbar to remain fixed */
+mat-toolbar {
+    z-index: 1001; /* Ensure toolbar stays on top */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Optional: Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px; /* Smaller sidebar for mobile */
+    }
+
+    .content {
+        margin-left: 60px; /* Adjust content margin for mobile */
+    }
+}
+
+/* Course-specific styling only - no layout containers */
+.course-container {
+    width: 50%;
+    padding: 15px;
+}
+
+.course-header {
+    margin-bottom: 20px;
+}
+
+.course-details {
+    margin-bottom: 20px;
+}
+
+.question-sets-container {
+    margin-top: 20px;
+    width: 100%; /* Take up the full width */
+    padding: 20px;
+    overflow-y: auto;
+    height: auto; /* adjust height */
+    background-color: #ffffff; /* Optional: Background color for question sets */
+    z-index: 1000; /* Ensure it is on top */
+    position: sticky; /* Make it sticky */
+    top: 84px; /* Stick below the toolbar */
+}
+
+.question-sets-container button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    justify-content: end;
+}
+
+.selected-question-set {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    justify-content: end;
+}
+
+.right-side-container {
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    float: right;
+}

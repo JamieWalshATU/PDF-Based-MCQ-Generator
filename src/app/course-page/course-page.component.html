@@ -1,48 +1,44 @@
-<app-pdf-parser *ngIf="courseId" [id]="courseId" [color]="secondaryColor"></app-pdf-parser>
-</div>
-<div *ngIf="course">
-  <h2>{{ course.name }}</h2>
-  
-  <!-- Debug information -->
-  <div style="margin: 10px; padding: 10px; border: 1px solid #ccc;">
-    <p>Debug: Question Sets Count: {{ course.questionSets?.length || 0 }}</p>
-  </div>
-  
-  <!-- Check if there are question sets -->
-  <div *ngIf="course.questionSets && course.questionSets.length > 0">
-    <h3>Question Sets</h3>
-    <div *ngFor="let questionSet of course.questionSets">
-      <h4>{{ questionSet.name }}</h4>
-      <p>Questions: {{ questionSet.questions?.length || 0 }}</p>
-      
-      <!-- Display questions if needed -->
-      <div *ngIf="questionSet.questions && questionSet.questions.length > 0">
-        <button (click)="toggleQuestions(questionSet)">
-          {{ questionSet.showQuestions ? 'Hide Questions' : 'Show Questions' }}
+<div style="display: flex; flex-direction: row;">
+  <div style="width: 50%;">
+    <div *ngIf="course" class="course-container">
+      <div class="course-header">
+        <h1 [style.color]="course.color">{{ course.name }}</h1>
+      </div>
+      <div class="course-details">
+        <p>Course ID: {{ courseId }}</p>
+        <p *ngIf="course?.description">
+          Course Description: {{ course.description }}
+        </p>
+        <app-pdf-parser *ngIf="courseId" [id]="courseId" [color]="course.color" (questionSetsUpdated)="refreshQuestionSets()"></app-pdf-parser>
+      </div>
+    </div>
+    <div
+      *ngIf="course && course.questionSets && course.questionSets.length > 0"
+      class="question-sets-container"
+    >
+      <h2>Generated Question Sets</h2>
+      <div *ngFor="let questionSet of course?.questionSets; let i = index">
+        <button
+          mat-raised-button
+          (click)="viewQuestions(questionSet)"
+          [style.backgroundColor]="course.color"
+        >
+          {{ questionSet.name }}
         </button>
-        
-        <div *ngIf="questionSet.showQuestions">
-          <div *ngFor="let question of questionSet.questions; let i = index">
-            <p><strong>Q{{ i+1 }}:</strong> {{ question.question }}</p>
-            <p><strong>Correct Answer:</strong> {{ question.correctAnswer }}</p>
-            <p><strong>Wrong Answers:</strong></p>
-            <ul>
-              <li *ngFor="let wrongAnswer of question.wrongAnswers">
-                {{ wrongAnswer }}
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-  
-  <!-- Display message if no question sets -->
-  <div *ngIf="!course.questionSets || course.questionSets.length === 0">
-    <p>No question sets available for this course yet.</p>
+  <div class="right-side-container" style="width: 50%;">
+    <div *ngIf="selectedQuestionSet" class="selected-question-set">
+      <h3>{{ selectedQuestionSet.name }}</h3>
+      <ul>
+        <li *ngFor="let question of selectedQuestionSet.questions">
+          <strong>Q:</strong> {{ question.question }}<br />
+        </li>
+      </ul>
+      <button mat-raised-button color="primary" (click)="generateTest()" [style.backgroundColor]="course?.color">Generate Test</button>
+      <button mat-raised-button color="primary" (click)="selectedQuestionSet = null" [style.backgroundColor]="course?.color">Close</button>
+      <app-test *ngIf="showTest" [data]="selectedQuestionSet.questions"></app-test>
+    </div>
   </div>
-</div>
-
-<div *ngIf="!course">
-  <p>Loading course...</p>
 </div>
